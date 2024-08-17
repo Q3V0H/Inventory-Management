@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model customer_order {
+  id                     BigInt                   @id @default(autoincrement())
+  customer_id            BigInt
+  quantity               BigInt
+  delivery_mode          delivery_mode?           @default(pickup)
+  status                 order_status
+  created_at             DateTime?                @default(now()) @db.Timestamp(6)
+  updated_at             DateTime?                @default(now()) @db.Timestamp(6)
+  members                members                  @relation(fields: [customer_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  customer_order_product customer_order_product[]
+}
+
+model customer_order_product {
+  id                BigInt         @id @default(autoincrement())
+  customer_order_id BigInt
+  product_id        BigInt
+  quantity          BigInt
+  amount            BigInt
+  created_at        DateTime?      @default(now()) @db.Timestamp(6)
+  updated_at        DateTime?      @default(now()) @db.Timestamp(6)
+  customer_order    customer_order @relation(fields: [customer_order_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  products          products       @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model members {
+  id             BigInt           @id @default(autoincrement())
+  role_id        BigInt
+  name           String           @db.VarChar(500)
+  phone          String           @unique @db.VarChar(500)
+  email          String           @unique @db.VarChar(500)
+  password       String           @db.VarChar(500)
+  created_at     DateTime         @default(now()) @db.Timestamp(6)
+  updated_at     DateTime         @default(now()) @db.Timestamp(6)
+  location       String?          @db.VarChar(500)
+  customer_order customer_order[]
+  expenses       expenses[]
+  roles          roles            @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  warehouse      warehouse[]
+}
+
+model products {
+  id                     BigInt                   @id @default(autoincrement())
+  name                   String                   @db.VarChar(255)
+  quantity               BigInt
+  description            String?
+  warehouse_id           BigInt?
+  created_at             DateTime?                @default(now()) @db.Timestamp(6)
+  updated_at             DateTime?                @default(now()) @db.Timestamp(6)
+  price                  BigInt
+  unit_of_measure        unit_of_measure?
+  category               product_category?
+  in_stock               Boolean?                 @default(true)
+  customer_order_product customer_order_product[]
+  product_images         product_images[]
+  warehouse              warehouse?               @relation(fields: [warehouse_id], references: [id], onUpdate: NoAction)
+  purchases              purchases[]
+  sales                  sales[]
+}
+
+model roles {
+  id          BigInt    @id @default(autoincrement())
+  name        String    @unique @db.VarChar(255)
+  description String?
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  updated_at  DateTime? @default(now()) @db.Timestamp(6)
+  members     members[]
+}
+
+model warehouse {
+  id          BigInt     @id @default(autoincrement())
+  name        String     @db.VarChar(255)
+  manager_id  BigInt?
+  location    String     @db.VarChar(500)
+  description String?
+  created_at  DateTime?  @default(now()) @db.Timestamp(6)
+  updated_at  DateTime?  @default(now()) @db.Timestamp(6)
+  products    products[]
+  members     members?   @relation(fields: [manager_id], references: [id], onUpdate: NoAction)
+}
+
+model expenses {
+  id          BigInt         @id @default(autoincrement())
+  name        String         @db.VarChar(255)
+  amount      BigInt
+  approved_by BigInt?
+  status      expense_status
+  members     members?       @relation(fields: [approved_by], references: [id], onUpdate: NoAction)
+}
+
+model purchases {
+  id           BigInt   @id @default(autoincrement())
+  product_id   BigInt
+  quantity     BigInt?
+  total_amount BigInt?
+  products     products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model sales {
+  id           BigInt   @id @default(autoincrement())
+  product_id   BigInt
+  quantity     BigInt?
+  total_amount BigInt?
+  products     products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model product_images {
+  id         BigInt    @id @default(autoincrement())
+  product_id BigInt?
+  image_url  String    @db.VarChar(500)
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  updated_at DateTime? @default(now()) @db.Timestamp(6)
+  products   products? @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+enum delivery_mode {
+  pickup
+  delivery
+}
+
+enum order_status {
+  placed
+  to_cart
+  paid
+  assigned
+  delivered
+}
+
+enum unit_of_measure {
+  kg
+  box
+  bottle
+  mtr
+  piece
+}
+
+enum expense_status {
+  pending
+  approved
+  cancelled
+}
+
+enum product_category {
+  electronics
+  home_appliances
+  fashion
+  outdoor
+  other
+}

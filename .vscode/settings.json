@@ -1,0 +1,16 @@
+{
+  "sqltools.connections": [
+    {
+      "pgOptions": {
+        "ssl": {
+          "rejectUnauthorized": true
+        }
+      },
+      "previewLimit": 50,
+      "server": "localhost",
+      "driver": "PostgreSQL",
+      "name": "inventory",
+      "connectString": "postgresql://neondb_owner:UCVtr0zkLSM6@ep-purple-thunder-a5l3yhxt.us-east-2.aws.neon.tech/neondb?sslmode=require"
+    }
+  ]
+}
