@@ -15,8 +15,8 @@ const poppins = Poppins({ subsets: ["latin"], weight: ["700"] });
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "Products", href: "/products" },
-  { name: "Contact", href: "/contact" },
+  { name: "Products", href: "#products" },
+  { name: "Contact", href: "#contact" },
 ];
 
 const Navbar = () => {

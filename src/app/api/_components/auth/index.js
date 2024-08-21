@@ -29,7 +29,7 @@ export const authOptions = {
         },
       },
       async authorize(credentials) {
-        if (!credentials.phone || !credentials.password) {
+        if (!credentials.email || !credentials.password) {
           return null;
         }
 

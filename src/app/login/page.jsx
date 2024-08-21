@@ -7,7 +7,6 @@ import { Button } from "@nextui-org/react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { HiMiniEye, HiMiniEyeSlash } from "react-icons/hi2";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 
@@ -26,7 +25,7 @@ const Login = () => {
     const signInData = await signIn("credentials", {
       email: email,
       password: password,
-      redirect: false,
+      redirect: true,
     });
 
     if (signInData?.error !== null) {
@@ -75,7 +74,6 @@ const Login = () => {
               <Input
                 type="email"
                 label="Email"
-                labelPlacement="outside"
                 variant="bordered"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -86,7 +84,6 @@ const Login = () => {
               <Label htmlFor="password">Password</Label>
               <Input
                 label="Password"
-                labelPlacement="outside"
                 variant="bordered"
                 placeholder="Enter your password"
                 value={password}
@@ -112,6 +109,15 @@ const Login = () => {
               </div>
               <Link href="">Forgot password?</Link>
             </div>
+
+            <p className="mt-5">
+              Don't have an account? Sign Up{" "}
+              <span>
+                <Link href="/register" className="text-sky-500">
+                  here
+                </Link>{" "}
+              </span>{" "}
+            </p>
 
             <div className="mt-2 w-full flex items-center justify-center">
               <Button

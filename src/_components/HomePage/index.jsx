@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Hero from "./Hero";
 import AllProducts from "./AllProducts";
 import Footer from "./Footer";
+import Contact from "./Contact";
 
 const Homepage = () => {
   const [limit, setLimit] = useState(6);
@@ -11,6 +12,7 @@ const Homepage = () => {
     <div>
       <Hero />
       <AllProducts limit={limit} setLimit={setLimit} />
+      <Contact />
       <Footer />
     </div>
   );
