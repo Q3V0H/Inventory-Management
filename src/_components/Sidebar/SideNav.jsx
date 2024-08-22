@@ -17,6 +17,9 @@ import { GiReceiveMoney } from "react-icons/gi";
 import { MdDriveEta } from "react-icons/md";
 import { CgEditBlackPoint } from "react-icons/cg";
 import { PiWarehouseDuotone } from "react-icons/pi";
+import { GiExpense } from "react-icons/gi";
+import { FaFirstOrder } from "react-icons/fa6";
+import { IoCartOutline } from "react-icons/io5";
 import { signOut } from "next-auth/react";
 
 const SideNav = ({ isOpen, toggleSidebar }) => {
@@ -73,6 +76,26 @@ const SideNav = ({ isOpen, toggleSidebar }) => {
                   Products
                 </p>
               </Link>
+              <Link href="/dashboard/cart">
+                <p
+                  className={`flex gap-2 items-center max-md:text-lg p-2 ${isActive(
+                    "/dashboard/cart"
+                  )}`}
+                >
+                  <IoCartOutline className="text-lg" />
+                  Cart
+                </p>
+              </Link>
+              <Link href="/dashboard/orders">
+                <p
+                  className={`flex gap-2 items-center max-md:text-lg p-2 ${isActive(
+                    "/dashboard/orders"
+                  )}`}
+                >
+                  <FaFirstOrder className="text-lg" />
+                  Orders
+                </p>
+              </Link>
               <Link href="/dashboard/warehouse">
                 <p
                   className={`flex gap-2 items-center max-md:text-lg p-2 ${isActive(
@@ -115,6 +138,16 @@ const SideNav = ({ isOpen, toggleSidebar }) => {
                   Roles
                 </p>
               </Link>
+              <Link href="/dashboard/expenses">
+                <p
+                  className={`flex gap-2 items-center max-md:text-lg p-2 ${isActive(
+                    "/dashboard/expenses"
+                  )}`}
+                >
+                  <GiExpense className="text-lg" />
+                  Expenses
+                </p>
+              </Link>
               <Link href="/dashboard/sales">
                 <p
                   className={`flex gap-2 items-center max-md:text-lg p-2 ${isActive(
@@ -128,16 +161,16 @@ const SideNav = ({ isOpen, toggleSidebar }) => {
             </>
           )}
 
-          {role === "Technician" && (
+          {role === "Driver" && (
             <>
-              <Link href="/dashboard/issues">
+              <Link href="/dashboard/orders">
                 <p
                   className={`flex gap-2 items-center max-md:text-lg p-2 ${isActive(
-                    "/dashboard/issues"
+                    "/dashboard/orders"
                   )}`}
                 >
-                  <PiWarehouseDuotone className="text-lg" />
-                  Issues
+                  <FaFirstOrder className="text-lg" />
+                  Orders
                 </p>
               </Link>
             </>
@@ -145,14 +178,14 @@ const SideNav = ({ isOpen, toggleSidebar }) => {
 
           {role === "Customer" && (
             <>
-              <Link href="/dashboard/points">
+              <Link href="/dashboard/orders">
                 <p
                   className={`flex gap-2 items-center max-md:text-lg p-2 ${isActive(
-                    "/dashboard/points"
+                    "/dashboard/orders"
                   )}`}
                 >
-                  <CgEditBlackPoint className="text-lg" />
-                  Bonus Points
+                  <FaFirstOrder className="text-lg" />
+                  Orders
                 </p>
               </Link>
 
