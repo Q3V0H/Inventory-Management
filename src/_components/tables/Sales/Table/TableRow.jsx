@@ -72,13 +72,10 @@ function TableRow(props) {
     <>
       <TR>
         <TDT name="#" txt={doc?.id || "-"} />
-        <TDT
-          name="PRODUCT NAME"
-          txt={doc?.customer_order_product?.products?.name || "-"}
-        />
-        <TDT name="QUANTITY" txt={doc?.quantity || ""} />
-        <TDT name="DELIVERY MODE" txt={doc?.delivery_mode || "--"} />
-        <TDT name="STATUS" txt={doc?.status || "--"} />
+        <TDT name="PRODUCT NAME" txt={doc?.products?.name || "-"} />
+        <TDT name="AMOUNT" txt={doc?.total_amount || ""} />
+        <TDT name="NO of ITEMS" txt={doc?.quantity || "--"} />
+        {/* <TDT name="STATUS" txt={doc?.status || "--"} /> */}
 
         {/* <TD>
           <TA name="Action" id={doc?.id} dropdownItems={items} />

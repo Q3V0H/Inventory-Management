@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FileText, Pencil } from "lucide-react";
 import { UploadDropzone } from "../../../../_components/util/uploadthing";
 import axios from "axios";
@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { Button } from "@nextui-org/react";
+import { Textarea } from "@/components/ui/textarea";
 
 const Add = () => {
   const [fileName, setFileName] = useState("");
@@ -20,14 +21,37 @@ const Add = () => {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [unit_of_measure, setMeasure] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [warehouses, setWarehouses] = useState([]);
+  const [warehouseId, setWarehouseId] = useState("");
   const [productId, setProductId] = useState("");
   const router = useRouter();
+
+  useEffect(() => {
+    getWarehouses();
+  }, []);
+
+  async function getWarehouses() {
+    try {
+      const res = await axios.get("/api/warehouses");
+      const { data } = res;
+      setWarehouses(data?.docs);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function handleAdd() {
     try {
       const res = await axios.post("/api/products/add", {
         name,
-        amount: parseInt(amount),
+        price: parseInt(price),
+        quantity: parseInt(quantity),
+        unit_of_measure,
+        warehouse_id: parseInt(warehouseId),
+        description,
+        category,
       });
 
       const { data } = res;
@@ -37,8 +61,10 @@ const Add = () => {
       toast({
         variant: "success",
         title: "Success!",
-        description: "Resource has been added successfully.",
+        description: "Product has been added successfully.",
       });
+
+      router.push("/dashboard/products");
     } catch (error) {
       console.error(error);
       toast({
@@ -52,7 +78,7 @@ const Add = () => {
 
   async function addPic() {
     try {
-      const res = await axios.post("/api/products/images/add", {
+      const res = await axios.post("/api/products/image/add", {
         product_id: parseInt(productId),
         image_url: url,
       });
@@ -63,13 +89,13 @@ const Add = () => {
 
   function handlePost() {
     handleAdd();
-    addPic();
+    // addPic();
   }
 
   return (
     <div className="pl-24 pr-5 max-md:px-0 max-md:pr-3 ml-6 max-md:ml-0">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] mx-auto">
-        <h3 className="text-center">Add Product</h3>
+        <h3 className="text-center font-semibold">Add Product</h3>
         <div className="mt-5">
           <div className="flex gap-5 max-md:flex-col">
             <div className="w-full">
@@ -111,6 +137,42 @@ const Add = () => {
               <option value="mtr">mtr</option>
               <option value="piece">piece</option>
             </select>
+          </div>
+          <div className="mt-4">
+            <Label>Category</Label>
+            <select
+              className="border p-2 w-full rounded-md"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="">Select Category</option>
+              <option value="electronics">Electronics</option>
+              <option value="home_appliances">Home Appliances</option>
+              <option value="fashion">Fashion</option>
+              <option value="outdoor">Outdoor</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div className="mt-4">
+            <Label>Warehouses</Label>
+            <select
+              className="border p-2 w-full rounded-md"
+              value={warehouseId}
+              onChange={(e) => setWarehouseId(e.target.value)}
+            >
+              <option value="">Select Warehouse</option>
+              {warehouses.map((warehouse, i) => (
+                <option value={warehouse.id}>{warehouse.name}</option>
+              ))}
+            </select>
+          </div>
+          <div className="mt-4">
+            <Label>Description</Label>
+            <Textarea
+              placeholder="Enter description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
           <div className="mt-6">
             <div className="col-span-full">

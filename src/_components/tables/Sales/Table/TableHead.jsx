@@ -10,10 +10,10 @@ function TableHead() {
   return (
     <Thead>
       <THT txt="#" />
-      <THTS txt="Product Name" field="" setOrder={setOrder} />
-      <THTS txt="QUANTITY" field="quantity" setOrder={setOrder} />
-      <THTS txt="DELIVERY MODE" field="delivery_mode" setOrder={setOrder} />
-      <THTS txt="STATUS" field="status" setOrder={setOrder} />
+      <THTS txt="Product Name" field="name" setOrder={setOrder} />
+      <THTS txt="AMOUNT" field="amount" setOrder={setOrder} />
+      <THTS txt="No of Items" field="" setOrder={setOrder} />
+      {/* <THTS txt="STATUS" field="status" setOrder={setOrder} /> */}
       {/* <THT txt="Actions" /> */}
     </Thead>
   );

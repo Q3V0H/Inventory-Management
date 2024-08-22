@@ -43,7 +43,7 @@ export default function useTable() {
   async function getDocs({ page, limit }) {
     try {
       setIsLoading(true);
-      const res = await axios.get("/api/cart", {
+      const res = await axios.get("/api/sales", {
         params: {
           page,
           limit,

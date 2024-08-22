@@ -7,6 +7,7 @@ import { Table, TBody } from "../components";
 import Filters from "./Filter";
 import { useRouter } from "next/navigation";
 import TableContext from "./Provider/TableContext";
+import ProductCard from "./Table/TableCard";
 
 export default function CartItems() {
   const {
@@ -52,7 +53,7 @@ export default function CartItems() {
       }}
     >
       <Table
-        label="All Orders"
+        label="All Cart Items"
         isLoading={isLoading}
         setIsLoading={setIsLoading}
         setDocs={setDocs}
@@ -61,7 +62,7 @@ export default function CartItems() {
         setIsFiltered={setIsFiltered}
         handleRemoveFilters={clearFilters}
         pagination={pagination}
-        url="users/search"
+        // url="users/search"
         // FilterComponent={<Filters />}
       >
         {/* <TableHead setOrder={setOrder} /> */}
@@ -69,7 +70,7 @@ export default function CartItems() {
           <div className="flex gap-5 max-md:flex-wrap">
             {docs.map((doc, i) => {
               return (
-                <TableRow
+                <ProductCard
                   key={doc?.id || i}
                   doc={doc}
                   refetchDocs={refetchDocs}

@@ -28,6 +28,8 @@ const Login = () => {
       redirect: true,
     });
 
+    router.push("/dashboard");
+
     if (signInData?.error !== null) {
       toast({
         variant: "destructive",
@@ -41,7 +43,6 @@ const Login = () => {
         title: "Logging in...",
         description: "",
       });
-      router.refresh();
       router.push("/dashboard");
     }
   }
